@@ -24,7 +24,7 @@ function Calculator() {
   return (
     <div>
       <h2>Calculator</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} role="form" aria-label="Pizza calculator form">
         <div className="form-group">
           <label htmlFor="numberOfPizzas">Number of Pizzas</label>
           <input
@@ -35,7 +35,11 @@ function Calculator() {
             max="20"
             value={inputs.numberOfPizzas}
             onChange={(e) => setInputs(prev => ({ ...prev, numberOfPizzas: parseInt(e.target.value) }))}
+            aria-describedby="pizzas-description"
           />
+          <span id="pizzas-description" className="visually-hidden">
+            Enter a number between 1 and 20
+          </span>
         </div>
 
         <div className="form-group">

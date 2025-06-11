@@ -34,15 +34,15 @@ function Recipe() {
   const recipe = calculateRecipe()
 
   return (
-    <div>
+    <div role="main">
       <h2>Your Pizza Recipe</h2>
       
-      <div className="recipe-card">
-        <p>
+      <div className="recipe-card" role="region" aria-label="Recipe details">
+        <p aria-live="polite">
           For {numberOfPizzas} {numberOfPizzas === 1 ? 'pizza' : 'pizzas'} ({pizzaSize}") at {hydration}% hydration
         </p>
         
-        <ul className="recipe-list">
+        <ul className="recipe-list" role="list">
           <li>{recipe.flour}g flour</li>
           <li>{recipe.water}g water</li>
           <li>{recipe.salt}g salt</li>

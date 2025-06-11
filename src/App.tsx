@@ -70,12 +70,21 @@ function AppContent() {
           <img 
             src="/pizza.svg" 
             alt="Pizza" 
+            role="button"
+            aria-label="Click to spin the pizza"
+            tabIndex={0}
             style={{ 
               transform: `rotate(${rotation}deg)`,
               cursor: 'pointer',
               willChange: 'transform'
             }}
             onClick={handlePizzaClick}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handlePizzaClick();
+              }
+            }}
           />
           Pizza Pi Party
         </h1>
