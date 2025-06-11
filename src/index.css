@@ -50,6 +50,10 @@ h1 {
 h1 img {
   height: 1.2em;
   width: auto;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 button {
