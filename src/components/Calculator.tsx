@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { recipes, type RecipeType, getRecipeType } from '../config/recipes'
 
 function Calculator() {
   const navigate = useNavigate()
@@ -8,7 +9,8 @@ function Calculator() {
   const [inputs, setInputs] = useState({
     numberOfPizzas: Number(searchParams.get('pizzas')) || 1,
     pizzaSize: searchParams.get('size') || '12',
-    hydration: searchParams.get('hydration') || '70'
+    hydration: searchParams.get('hydration') || recipes[getRecipeType(searchParams.get('recipe'))].defaultHydration.toString(),
+    recipeType: getRecipeType(searchParams.get('recipe'))
   })
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -16,7 +18,8 @@ function Calculator() {
     const params = new URLSearchParams({
       pizzas: inputs.numberOfPizzas.toString(),
       size: inputs.pizzaSize,
-      hydration: inputs.hydration
+      hydration: inputs.hydration,
+      recipe: inputs.recipeType
     })
     navigate(`/recipe?${params.toString()}`)
   }
@@ -25,6 +28,30 @@ function Calculator() {
     <div>
       <h2>Calculator</h2>
       <form onSubmit={handleSubmit} role="form" aria-label="Pizza calculator form">
+        <div className="form-group">
+          <label htmlFor="recipeType">Recipe Type</label>
+          <select
+            id="recipeType"
+            className="form-control"
+            value={inputs.recipeType}
+            onChange={(e) => {
+              const newRecipeType = getRecipeType(e.target.value);
+              setInputs(prev => ({ 
+                ...prev, 
+                recipeType: newRecipeType,
+                hydration: recipes[newRecipeType].defaultHydration.toString()
+              }))
+            }}
+          >
+            {Object.entries(recipes).map(([key, recipe]) => (
+              <option key={key} value={key}>{recipe.name}</option>
+            ))}
+          </select>
+          <p className="recipe-description">
+            {recipes[inputs.recipeType].description}
+          </p>
+        </div>
+
         <div className="form-group">
           <label htmlFor="numberOfPizzas">Number of Pizzas</label>
           <input
@@ -65,6 +92,7 @@ function Calculator() {
             value={inputs.hydration}
             onChange={(e) => setInputs(prev => ({ ...prev, hydration: e.target.value }))}
           >
+            <option value="60">60%</option>
             <option value="65">65%</option>
             <option value="70">70%</option>
             <option value="75">75%</option>
